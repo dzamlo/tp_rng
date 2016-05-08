@@ -8,5 +8,4 @@ RUN jupyter nbextension enable "usability/hide_input/main"
 RUN jupyter nbextension enable "usability/hide_input_all/main"
 RUN jupyter nbextension enable "usability/python-markdown/main"
 # import matplotlib to pre-build the font cache
-RUN python -c "import matplotlib"
-RUN python3 -c "import matplotlib"
+RUN python -c "import matplotlib.pyplot"
