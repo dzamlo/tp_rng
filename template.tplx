@@ -1,4 +1,4 @@
-((= Pour decommenter une des lignes, remplacez, les = par des * =))
+((= Pour decommenter une des lignes, remplacez les = par des * =))
 ((= set cell_style = 'style_python.tplx' =))
 ((= set cell_style = 'style_ipython.tplx' =))
 ((= set cell_style = 'style_bw_python.tplx' =))
@@ -20,6 +20,9 @@
 ((*- else *))
     ((( super() )))
 ((*- endif *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["subtitle"]: -*))
+    \subtitle{((( nb.metadata["latex_metadata"]["subtitle"] )))}
+((*- endif *))
 ((* endblock title *))
 
 ((* block date *))
@@ -31,29 +34,36 @@
 ((* endblock date *))
 
 ((* block packages *))
+\usepackage[T1]{fontenc}
 ((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["babel_arguments"]: -*))
     \usepackage[((( nb.metadata["latex_metadata"]["babel_arguments"] )))]{babel}
 ((*- endif *))
 \usepackage{microtype}
 \usepackage{navigator}
+\usepackage{lastpage}
+\usepackage[automark]{scrlayer-scrpage}
 ((( super() )))
+\usepackage{scrhack}
 
-\makeatletter
-\AtBeginDocument{
-  \hypersetup{
+((* endblock packages *))
+
+((* block commands *))
+
+\hypersetup{
 ((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["title"]: -*))
     pdftitle = {((( nb.metadata["latex_metadata"]["title"] )))},
 ((*- endif *))
 ((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["author"]: -*))
     pdfauthor = {((( nb.metadata["latex_metadata"]["author"] )))}
 ((*- endif *))
-  }
 }
+
+\pagestyle{headings}
+\clearpairofpagestyles
+\makeatletter
+\ifoot[\@title, \@date]{\@title, \@date}
+\ofoot[\pagemark/\pageref{LastPage}]{\pagemark/\pageref{LastPage}}
 \makeatother
-
-((* endblock packages *))
-
-((* block commands *))
 
 ((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["notebook_file_name"]: -*))
 \embeddedfile{}[((( nb.metadata["latex_metadata"]["notebook_file_name"] )))]{./((( resources['metadata']['path'] )))/((( resources['metadata']['name'] ))).ipynb}
@@ -69,3 +79,7 @@
 ((( super() )))
 ((*- endif *))
 ((* endblock input_group *))
+
+((* block docclass *))
+\documentclass[((( nb.metadata.get('latex_metadata', {}).get('documentclass_arguments', 'a4paper') )))]{scrartcl}
+((* endblock docclass *))
