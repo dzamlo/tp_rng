@@ -1,0 +1,71 @@
+((= Pour decommenter une des lignes, remplacez, les = par des * =))
+((= set cell_style = 'style_python.tplx' =))
+((= set cell_style = 'style_ipython.tplx' =))
+((= set cell_style = 'style_bw_python.tplx' =))
+((= set cell_style = 'style_bw_ipython.tplx' =))
+
+((*- extends 'article.tplx' -*))
+
+((* block author *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["author"]: -*))
+    \author{((( nb.metadata["latex_metadata"]["author"] )))}
+((*- else *))
+    ((( super() )))
+((*- endif *))
+((* endblock author *))
+
+((* block title *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["title"]: -*))
+    \title{((( nb.metadata["latex_metadata"]["title"] )))}
+((*- else *))
+    ((( super() )))
+((*- endif *))
+((* endblock title *))
+
+((* block date *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["date"]: -*))
+    \date{((( nb.metadata["latex_metadata"]["date"] )))}
+((*- else *))
+    ((( super() )))
+((*- endif *))
+((* endblock date *))
+
+((* block packages *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["babel_arguments"]: -*))
+    \usepackage[((( nb.metadata["latex_metadata"]["babel_arguments"] )))]{babel}
+((*- endif *))
+\usepackage{microtype}
+\usepackage{navigator}
+((( super() )))
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["title"]: -*))
+    pdftitle = {((( nb.metadata["latex_metadata"]["title"] )))},
+((*- endif *))
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["author"]: -*))
+    pdfauthor = {((( nb.metadata["latex_metadata"]["author"] )))}
+((*- endif *))
+  }
+}
+\makeatother
+
+((* endblock packages *))
+
+((* block commands *))
+
+((*- if nb.metadata["latex_metadata"] and nb.metadata["latex_metadata"]["notebook_file_name"]: -*))
+\embeddedfile{}[((( nb.metadata["latex_metadata"]["notebook_file_name"] )))]{./((( resources['metadata']['path'] )))/((( resources['metadata']['name'] ))).ipynb}
+((*- elif resources['metadata']['path'] *))
+\embeddedfile{}{./((( resources['metadata']['path'] )))/((( resources['metadata']['name'] ))).ipynb}
+((*- else *))
+\embeddedfile{}{((( resources['metadata']['name'] ))).ipynb}
+((*- endif *))
+((* endblock commands *))
+
+((* block input_group *))
+((*- if not (nb['metadata'].get('hide_input', False) or cell['metadata'].get('hide_input', False)) *))
+((( super() )))
+((*- endif *))
+((* endblock input_group *))
