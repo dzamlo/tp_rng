@@ -2,7 +2,7 @@ FROM andrewosh/binder-base
 
 USER main
 
-RUN pip install sobol-seq --user
+RUN pip3 install sobol-seq --user
 RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
 RUN jupyter nbextension enable "usability/codefolding/main"
 RUN jupyter nbextension enable "usability/hide_input/main"
