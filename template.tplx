@@ -43,6 +43,7 @@
 \usepackage{lastpage}
 \usepackage[automark]{scrlayer-scrpage}
 ((( super() )))
+\usepackage{hyperref}
 \usepackage{scrhack}
 
 ((* endblock packages *))
